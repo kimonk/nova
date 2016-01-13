@@ -160,14 +160,14 @@ class API(object):
         specified, then a writeable file handle to the destination path is
         constructed in the method and the image bits written to that file, and
         again, None is returned from the method. If no data argument is
-        supplied and no dest_path argument is supplied (VMWare and XenAPI virt
+        supplied and no dest_path argument is supplied (VMWare and XenAPI virtww
         drivers), then the method returns an iterator to the image bits that
         the caller uses to write to wherever location it wants. Finally, if the
         allow_direct_url_schemes CONF option is set to something, then the
         nova.image.download modules are used to attempt to do an SCP copy of
         the image bits from a file location to the dest_path and None is
         returned after retrying one or more download locations (libvirt and
-        Hyper-V virt drivers through nova.virt.images.fetch).
+        Hyper-V virt drivers through nova.virt.images.fetch).s
 
         I think the above points to just how hacky/wacky all of this code is,
         and the reason it needs to be cleaned up and standardized across the

@@ -197,7 +197,7 @@ class RequestContext(context.RequestContext):
 
     def elevated(self, read_deleted=None):
         """Return a version of this context with admin flag set."""
-        context = copy.deepcopy(self)
+        context = copy.copy(self)
         context.is_admin = True
 
         if 'admin' not in context.roles:

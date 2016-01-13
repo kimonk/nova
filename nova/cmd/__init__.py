@@ -14,11 +14,15 @@
 # under the License.
 
 import eventlet
-
+import sys
 from nova import debugger
+
+sys.path.append('/opt/org.python.pydev_4.0.0.201504132356/pysrc')
+
 
 if debugger.enabled():
     # turn off thread patching to enable the remote debugger
     eventlet.monkey_patch(os=False, thread=False)
 else:
-    eventlet.monkey_patch(os=False)
+   #eventlet.monkey_patch(os=False)
+    eventlet.patcher.monkey_patch(all=False,socket=True, time=True, thread=False)

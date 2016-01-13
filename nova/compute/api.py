@@ -78,6 +78,7 @@ from nova import servicegroup
 from nova import utils
 from nova.virt import hardware
 from nova import volume
+import pydevd
 
 LOG = logging.getLogger(__name__)
 
@@ -1542,6 +1543,8 @@ class API(base.Base):
 
         Returns a tuple of (instances, reservation_id)
         """
+
+        pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
 
         self._check_create_policies(context, availability_zone,
                 requested_networks, block_device_mapping)
