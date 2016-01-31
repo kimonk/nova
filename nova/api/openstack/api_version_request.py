@@ -56,6 +56,8 @@ REST_API_VERSION_HISTORY = """REST API Version History:
     * 2.13 - Add project id and user id information for os-server-groups API
     * 2.14 - Remove onSharedStorage from evacuate request body and remove
              adminPass from the response body
+
+    *2.19 - Test API for tNova Project, f-int
 """
 
 # The minimum and maximum versions of the API supported
@@ -64,7 +66,7 @@ REST_API_VERSION_HISTORY = """REST API Version History:
 # Note(cyeoh): This only applies for the v2.1 API once microversions
 # support is fully merged. It does not affect the V2 API.
 _MIN_API_VERSION = "2.1"
-_MAX_API_VERSION = "2.14"
+_MAX_API_VERSION = "2.19"
 DEFAULT_API_VERSION = _MIN_API_VERSION
 
 

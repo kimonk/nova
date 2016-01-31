@@ -2,7 +2,7 @@ __author__ = 'akis'
 
 from novaclient import client
 
-nova = client.Client('2', 'admin', 'akis100', 'demo', 'http://192.168.1.7:5000/v2.0')
+nova = client.Client('2.19', 'admin', 'akis100', 'demo', 'http://192.168.1.7:5000/v2.0')
 
 
 
@@ -12,4 +12,6 @@ nova = client.Client('2', 'admin', 'akis100', 'demo', 'http://192.168.1.7:5000/v
 
 #print(nova.hypervisors.get(1).NAME_ATTR)
 
-print(nova.flavors.list())
+
+print(nova.bitstreams.list())
+print(nova.images.list())

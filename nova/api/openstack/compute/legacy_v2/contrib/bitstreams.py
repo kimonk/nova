@@ -78,7 +78,6 @@ class bitstreamsController(wsgi.Controller):
         return filters
 
     @extensions.expected_errors(404)
-    @wsgi.Controller.api_version("2.1")
     def show(self, req, id):
         """Return detailed information about a specific bitstreams given its bitstreams (image)
         .
@@ -108,7 +107,6 @@ class bitstreamsController(wsgi.Controller):
 
     @extensions.expected_errors((403, 404))
     @wsgi.response(204)
-    @wsgi.Controller.api_version("2.1")
     def delete(self, req, id):
         """Delete an image, if allowed.
 
@@ -128,7 +126,6 @@ class bitstreamsController(wsgi.Controller):
             raise webob.exc.HTTPForbidden(explanation=explanation)
 
     @extensions.expected_errors(400)
-    @wsgi.Controller.api_version("2.1")
     def index(self, req):
         """Return an index listing of images available to the request.
 
@@ -164,35 +161,23 @@ class bitstreamsController(wsgi.Controller):
         return self._view_builder.index(req, bitstreams)
 
     @extensions.expected_errors(400)
-    @wsgi.Controller.api_version("2.1")
     def detail(self, req):
         """Return a detailed index listing of images available to the request.
+q
         :param req: `wsgi.Request` object.
 
         """
         context = req.environ['nova.context']
         filters = self._get_filters(req)
         page_params = common.get_pagination_params(req)
-
-        bitstreams=[]
-
-
         try:
             images = self._image_api.get_all(context, filters=filters,
                                              **page_params)
         except exception.Invalid as e:
             raise webob.exc.HTTPBadRequest(explanation=e.format_message())
 
-        for image in images:
-             LOG.debug("image is %s", image.get("name"))
-             if image.get("properties", {}).get("is-vnf") =="True":
-                #LOG.debug("removed %s ", image.get("name"))
-                bitstreams.append(image)
-
-
-
-        req.cache_db_items('images', bitstreams, 'id')
-        return self._view_builder.detail(req, bitstreams)
+        req.cache_db_items('images', images, 'id')
+        return self._view_builder.detail(req, images)
 
 
 class Bitstreams(extensions.V21APIExtensionBase):

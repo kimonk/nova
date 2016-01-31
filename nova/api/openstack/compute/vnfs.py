@@ -528,6 +528,7 @@ class VNFsController(wsgi.Controller):
     @extensions.expected_errors((400, 403, 409, 413))
     @validation.schema(schema_server_create_v20, '2.0', '2.0')
     @validation.schema(schema_server_create, '2.1')
+    @wsgi.Controller.api_version("2.19")
     def create(self, req, body):
         """Creates a new vnf for a given user."""
         pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
