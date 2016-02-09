@@ -1544,7 +1544,7 @@ class API(base.Base):
         Returns a tuple of (instances, reservation_id)
         """
 
-        pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
+       #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
 
         self._check_create_policies(context, availability_zone,
                 requested_networks, block_device_mapping)

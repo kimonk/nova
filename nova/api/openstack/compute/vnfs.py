@@ -423,6 +423,28 @@ class VNFsController(wsgi.Controller):
         else:
             response = self._view_builder.index(req, instance_list)
         req.cache_db_instances(instance_list)
+
+
+
+
+        tempVNF1 = response.get("servers")
+        print(tempVNF1)
+        tempVNF = tempVNF1[0]
+        tempVNF.pop("flavor",None)
+        tempVNF.pop("OS-EXT-SRV-ATTR:host",None)
+        tempVNF.pop("OS-SRV-USG:terminated_at",None)
+        tempVNF.pop("OS-EXT-SRV-ATTR:hypervisor_hostname",None)
+        tempVNF.pop("os-extended-volumes:volumes_attached",None)
+        tempVNF.pop("key_name",None)
+        tempVNF.pop("config_drive",None)
+        tempVNF.pop("OS-DCF:diskConfig",None)
+        tempVNF.pop("OS-EXT-STS:vm_state",None)
+        tempVNF.pop("image",None)
+        tempVNF.pop("links",None)
+
+
+
+
         return response
 
     def _get_server(self, context, req, instance_uuid, is_detail=False):
@@ -528,10 +550,10 @@ class VNFsController(wsgi.Controller):
     @extensions.expected_errors((400, 403, 409, 413))
     @validation.schema(schema_server_create_v20, '2.0', '2.0')
     @validation.schema(schema_server_create, '2.1')
-    @wsgi.Controller.api_version("2.19")
+    #@wsgi.Controller.api_version("2.19")
     def create(self, req, body):
         """Creates a new vnf for a given user."""
-        pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
+        #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
 
         context = req.environ['nova.context']
         server_dict = body['server']

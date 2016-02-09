@@ -43,6 +43,7 @@ from nova.i18n import _LW
 from nova.image import glance
 from nova import objects
 from nova import utils
+import pydevd
 
 ALIAS = 'servers'
 
@@ -273,6 +274,13 @@ class ServersController(wsgi.Controller):
         authorize(context, action="index")
         try:
             servers = self._get_servers(req, is_detail=False)
+            #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
+
+            ##tnova##############
+
+
+            #servers.popitem()
+
         except exception.Invalid as err:
             raise exc.HTTPBadRequest(explanation=err.format_message())
         return servers
@@ -413,6 +421,32 @@ class ServersController(wsgi.Controller):
         else:
             response = self._view_builder.index(req, instance_list)
         req.cache_db_instances(instance_list)
+
+
+
+
+
+
+        tempVNF1 = response.get("servers")
+        # print("asfdasfdadfadfas %s",response["servers"])
+        # #if  tempVNF1:
+        for tempVNF  in response.get("servers"):
+            #tempVNF.pop("flavor",None)
+            tempVNF.pop("OS-EXT-SRV-ATTR:host",None)
+            tempVNF.pop("OS-SRV-USG:terminated_at",None)
+            tempVNF.pop("OS-EXT-SRV-ATTR:hypervisor_hostname",None)
+            tempVNF.pop("os-extended-volumes:volumes_attached",None)
+            tempVNF.pop("key_name",None)
+            tempVNF.pop("config_drive",None)
+            tempVNF.pop("OS-DCF:diskConfig",None)
+            tempVNF.pop("OS-EXT-STS:vm_state",None)
+            tempVNF.pop("image",None)
+            tempVNF.pop("security_groups",None)
+            tempVNF.pop("key_name",None)
+            tempVNF.pop("progress",None)
+
+       #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
+
         return response
 
     def _get_server(self, context, req, instance_uuid, is_detail=False):
