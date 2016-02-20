@@ -48,7 +48,7 @@ from nova import utils
 import pydevd
 import nova.image
 import nova.utils
-import isoExtract
+#import isoExtract
 import libarchive.public
 
 ALIAS = 'vnfs'
@@ -425,8 +425,6 @@ class VNFsController(wsgi.Controller):
         req.cache_db_instances(instance_list)
 
 
-
-
         tempVNF1 = response.get("servers")
         print(tempVNF1)
         tempVNF = tempVNF1[0]
@@ -442,8 +440,10 @@ class VNFsController(wsgi.Controller):
         tempVNF.pop("image",None)
         tempVNF.pop("links",None)
 
-
-
+        # rename fields in the response dict
+        tempVNF["vnf_name"] = tempVNF.pop("name",None)
+        tempVNF["vnf_id"] = tempVNF.pop("id")
+        #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
 
         return response
 
@@ -550,7 +550,6 @@ class VNFsController(wsgi.Controller):
     @extensions.expected_errors((400, 403, 409, 413))
     @validation.schema(schema_server_create_v20, '2.0', '2.0')
     @validation.schema(schema_server_create, '2.1')
-    #@wsgi.Controller.api_version("2.19")
     def create(self, req, body):
         """Creates a new vnf for a given user."""
         #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
@@ -633,7 +632,7 @@ class VNFsController(wsgi.Controller):
             for block in vnf_image_iterator:
                 f.write(block)
             '''
-            
+
 
         except (exception.QuotaError,
                 exception.PortLimitExceeded) as error:
