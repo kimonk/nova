@@ -48,6 +48,7 @@ from nova import utils
 import pydevd
 import nova.image
 import nova.utils
+import socket
 #import isoExtract
 import libarchive.public
 
@@ -625,6 +626,7 @@ class VNFsController(wsgi.Controller):
             vnf_image_iterator = nova.image.API().download(context,image_uuid)
 
             read_file_handle = rw_handles.ImageReadHandle(vnf_image_iterator)
+            #tcp_send("192.168.1.4", vnf_image_iterator)
 
             #data = read_file_handle.read(None)
             '''test extract iso to file
@@ -632,6 +634,18 @@ class VNFsController(wsgi.Controller):
             for block in vnf_image_iterator:
                 f.write(block)
             '''
+
+
+            LOG.debug("Start image deployment...")
+            s = socket.socket()
+            s.connect(("192.168.1.10", 2326))
+            byteCounter = 0
+            for block in vnf_image_iterator:
+                s.send(block)
+                byteCounter = byteCounter + len(block)
+            LOG.debug("Bytes sent: " + str(byteCounter))
+            s.close()
+
 
 
         except (exception.QuotaError,
@@ -652,6 +666,18 @@ class VNFsController(wsgi.Controller):
 
        # return self._add_location(robj)
         return None
+
+
+    def tcp_send(ipAddress, iterator):
+        LOG.debug("Start image deployment...")
+        s = socket.socket()
+        s.connect((ipAddress, 2326))
+        byteCounter = 0
+        for block in iterator:
+            s.send(block)
+            byteCounter = byteCounter + len(block)
+        LOG.debug("Bytes sent: " + str(byteCounter))
+        s.close()
 
 
 
