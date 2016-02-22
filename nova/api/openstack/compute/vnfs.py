@@ -625,6 +625,9 @@ class VNFsController(wsgi.Controller):
         try:
             vnf_image_iterator = nova.image.API().download(context,image_uuid)
 
+
+
+
             read_file_handle = rw_handles.ImageReadHandle(vnf_image_iterator)
             #tcp_send("192.168.1.4", vnf_image_iterator)
 
