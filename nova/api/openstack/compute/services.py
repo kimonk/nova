@@ -186,6 +186,8 @@ class ServiceController(wsgi.Controller):
         """Return a list of all running services. Filter by host & service
         name
         """
+
+
         if api_version_request.is_supported(req, min_version='2.11'):
             _services = self._get_services_list(req, ['forced_down'])
         else:
