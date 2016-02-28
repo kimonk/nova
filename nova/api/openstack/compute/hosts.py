@@ -28,7 +28,7 @@ from nova import compute
 from nova import exception
 from nova.i18n import _LI
 from nova import objects
-
+import pydevd
 LOG = logging.getLogger(__name__)
 ALIAS = 'os-hosts'
 authorize = extensions.os_compute_authorizer(ALIAS)
@@ -95,6 +95,7 @@ class HostController(wsgi.Controller):
                               'service': service['topic'],
                               'zone': service['availability_zone']})
         return {'hosts': hosts}
+
 
     @extensions.expected_errors((400, 404, 501))
     @validation.schema(hosts.update)

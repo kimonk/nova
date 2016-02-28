@@ -24,6 +24,8 @@ from nova import exception
 from nova.i18n import _
 from nova import servicegroup
 from nova import utils
+import socket
+import pydevd
 
 ALIAS = "os-services"
 authorize = extensions.os_compute_authorizer(ALIAS)
@@ -176,6 +178,9 @@ class ServiceController(wsgi.Controller):
             explanation = _("Service %s not found.") % id
             raise webob.exc.HTTPNotFound(explanation=explanation)
 
+
+
+
     @extensions.expected_errors(())
     def index(self, req):
         """Return a list of all running services. Filter by host & service
@@ -185,8 +190,32 @@ class ServiceController(wsgi.Controller):
             _services = self._get_services_list(req, ['forced_down'])
         else:
             _services = self._get_services_list(req)
+        #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
+        if self._probeFpga("192.168.1.7",11)==0:
+            for service in _services:
+                if service.get("host", default=None) == "fpgaWorker":
+                    service["state"] = "up"
+
+
+        else:
+            for service in _services:
+                if service["host"] == "fpgaWorker":
+                    service["state"] = "down"
+
+
 
         return {'services': _services}
+
+
+    def _probeFpga(self, service_ip, service_port):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        result = sock.connect_ex((service_ip,service_port))
+        if result == 0:
+            return 0
+        else:
+            return 1
+
+
 
     @extensions.expected_errors((400, 404))
     @validation.schema(services.service_update, '2.0', '2.10')
