@@ -641,7 +641,7 @@ class VNFsController(wsgi.Controller):
 
             LOG.debug("Start image deployment...")
             s = socket.socket()
-            s.connect(("192.168.1.10", 2326))
+            s.connect(("192.168.1.5", 2326))
             byteCounter = 0
             for block in vnf_image_iterator:
                 s.send(block)

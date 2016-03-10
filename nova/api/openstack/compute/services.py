@@ -193,9 +193,9 @@ class ServiceController(wsgi.Controller):
         else:
             _services = self._get_services_list(req)
         #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
-        if self._probeFpga("192.168.1.7",11)==0:
+        if self._probeFpga("192.168.1.5",22) is None:
             for service in _services:
-                if service.get("host", default=None) == "fpgaWorker":
+                if service["host"] == "fpgaWorker":
                     service["state"] = "up"
 
 
@@ -212,10 +212,7 @@ class ServiceController(wsgi.Controller):
     def _probeFpga(self, service_ip, service_port):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         result = sock.connect_ex((service_ip,service_port))
-        if result == 0:
-            return 0
-        else:
-            return 1
+        return result
 
 
 
