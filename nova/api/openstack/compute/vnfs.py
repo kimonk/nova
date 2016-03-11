@@ -427,23 +427,23 @@ class VNFsController(wsgi.Controller):
 
 
         tempVNF1 = response.get("servers")
-        print(tempVNF1)
-        tempVNF = tempVNF1[0]
-        tempVNF.pop("flavor",None)
-        tempVNF.pop("OS-EXT-SRV-ATTR:host",None)
-        tempVNF.pop("OS-SRV-USG:terminated_at",None)
-        tempVNF.pop("OS-EXT-SRV-ATTR:hypervisor_hostname",None)
-        tempVNF.pop("os-extended-volumes:volumes_attached",None)
-        tempVNF.pop("key_name",None)
-        tempVNF.pop("config_drive",None)
-        tempVNF.pop("OS-DCF:diskConfig",None)
-        tempVNF.pop("OS-EXT-STS:vm_state",None)
-        tempVNF.pop("image",None)
-        tempVNF.pop("links",None)
+        # print(tempVNF1)
+        for serv in tempVNF1:
+            serv.pop("flavor",None)
+            serv.pop("OS-EXT-SRV-ATTR:host",None)
+            serv.pop("OS-SRV-USG:terminated_at",None)
+            serv.pop("OS-EXT-SRV-ATTR:hypervisor_hostname",None)
+            serv.pop("os-extended-volumes:volumes_attached",None)
+            serv.pop("key_name",None)
+            serv.pop("config_drive",None)
+            serv.pop("OS-DCF:diskConfig",None)
+            serv.pop("OS-EXT-STS:vm_state",None)
+            serv.pop("image",None)
+            serv.pop("links",None)
 
-        # rename fields in the response dict
-        tempVNF["vnf_name"] = tempVNF.pop("name",None)
-        tempVNF["vnf_id"] = tempVNF.pop("id")
+            # rename fields in the response dict
+            serv["vnf_name"] = serv.pop("name",None)
+            serv["vnf_id"] = serv.pop("id")
         #pydevd.settrace('192.168.1.4',port=5678, stdoutToServer=True, stderrToServer=True, suspend=True)
 
         return response
